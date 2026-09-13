@@ -1,0 +1,21 @@
+# Scraper dependencies
+requests>=2.32.0
+beautifulsoup4>=4.12.0
+trafilatura>=2.0.0
+langdetect>=1.0.9
+
+# RAG / chunking dependencies
+langchain-core>=0.3.0
+langchain-text-splitters>=0.3.0
+langchain-community>=0.3.0
+
+# Embeddings + vector database
+sentence-transformers>=3.0.0
+chromadb>=0.5.0
+torch>=2.0.0
+rank_bm25>=0.2.2
+
+# Chat (Step 4) — Groq LLM + Streamlit UI
+langchain-groq>=0.2.0
+streamlit>=1.32.0
+python-dotenv>=1.0.0

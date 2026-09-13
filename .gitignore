@@ -1,0 +1,8 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+data/processed/
+chroma_db/ #later will have to remove as we have to commit the vector database to github so streamlit server can access it
+*.log
