@@ -102,19 +102,21 @@ def make_chunk_id(source_id, chunk_index):
 def create_splitters():
     markdown_splitter = MarkdownHeaderTextSplitter(
         headers_to_split_on=HEADERS_TO_SPLIT_ON,
-        strip_headers=False,
+        strip_headers=False, #include the headers in the chunk themselves
     )
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
         chunk_overlap=CHUNK_OVERLAP,
         length_function=len,
-        separators=["\n\n", "\n", ". ", " ", ""],
+        separators=["\n\n", "\n", ". ", " ", ""], #seperate on paragraphs first, then line breaks, then sentences, then words, then forcibly through middle of the string
     )
     return markdown_splitter, text_splitter
 
 
 def is_catalog_course_page(page_record) -> bool:
-    """METU academic catalog single-course pages (code + content on one URL)."""
+    """METU academic catalog single-course pages are kept whole 
+    and chunked only using the recursive character text splitter if necessary"""
+    
     url = page_record.get("url") or ""
     return "catalog.metu.edu.tr/course.php" in url
 
@@ -124,7 +126,7 @@ def chunk_catalog_course(page_record, text_splitter):
     Keep catalog course pages intact so metadata and Course Content stay together.
 
     Skips MarkdownHeaderTextSplitter (which would split ## title from ### Course Content
-    with no overlap). Short pages → one chunk; longer ones → recursive split with overlap.
+    with no overlap).
     """
     base_metadata = build_base_metadata(page_record)
     content = (page_record.get("content") or "").strip()

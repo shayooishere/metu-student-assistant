@@ -124,7 +124,7 @@ def extract_main_content(html, url):
     We try markdown first (keeps headings like # Title).
     If that fails, we fall back to plain text.
 
-    favor_recall=True means "get more text" — better for METU pages.
+    favor_recall=True means trafilatura tries to get as much text as possible instead of prioritizing strict cleanliness.
     """
     settings = {
         "url": url,

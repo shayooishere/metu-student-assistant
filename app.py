@@ -135,6 +135,7 @@ if "messages" not in st.session_state: #checks if a message key already exists i
 # Enable once there is at least one message in the thread
 has_messages = len(st.session_state.messages) >= 1
 
+#adding a new chat and export chat option
 col_new, col_export, _ = st.columns([1, 1, 3])
 with col_new:
     if st.button("New chat", use_container_width=True, disabled=not has_messages):

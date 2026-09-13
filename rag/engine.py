@@ -39,7 +39,7 @@ EMBEDDING_MODEL = "BAAI/bge-m3"
 # Final chunks sent to the LLM (hybrid dense + BM25, RRF-ranked)
 TOP_K = 5
 
-# How many unique source URLs to show in the UI (docs are hybrid/RRF-ordered)
+# How many unique source URLs to show in the UI 
 MAX_SOURCES = 5
 
 # Short-term chat memory: how much prior conversation to use
@@ -169,7 +169,7 @@ def create_llm():
         model=GROQ_MODEL,
         temperature=0.2,  # low = more factual, less creative
         max_tokens=MAX_OUTPUT_TOKENS,
-        # gpt-oss uses reasoning tokens from the same completion budget.
+        # gpt-oss uses reasoning tokens from the total max_tokens allowed.
         # "low" leaves more room for the visible answer in long procedures.
         reasoning_effort="low",
         api_key=api_key,
@@ -225,9 +225,9 @@ def unique_sources(docs, max_sources: int = MAX_SOURCES):
     Return unique (title, url) pairs for display under the answer.
 
     Docs are expected in hybrid/RRF order (best first). Only the first
-    `max_sources` distinct URLs are kept so the UI stays focused.
+    'max_sources' distinct URLs are kept so the UI stays focused.
     """
-    seen = set()
+    seen = set() #faster lookups than list
     sources = []
     for doc in docs:
         if len(sources) >= max_sources:

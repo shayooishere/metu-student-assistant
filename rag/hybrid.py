@@ -6,7 +6,6 @@ Used by:
   - rag/engine.py → hybrid search at question time
 """
 
-from __future__ import annotations
 
 import pickle
 import re
@@ -31,13 +30,6 @@ def bm25_index_path(chroma_folder: Path) -> Path:
 def tokenize(text: str) -> list[str]:
     """Simple tokenizer that keeps English + Turkish letters and digits."""
     text = (text or "").lower()
-    # Normalize common add-drop spellings so calendar rows and FAQs align
-    text = (
-        text.replace("add/drop", " adddrop ")
-        .replace("add-drop", " adddrop ")
-        .replace("add - drop", " adddrop ")
-        .replace("add drop", " adddrop ")
-    )
     return re.findall(r"[a-z0-9çğıöşüâîû]+", text)
 
 
@@ -75,11 +67,11 @@ def build_bm25_index(documents: list[Document]) -> dict:
     }
 
 
-def save_bm25_index(index_payload: dict, chroma_folder: Path) -> Path:
+def save_bm25_index(index: dict, chroma_folder: Path) -> Path:
     path = bm25_index_path(chroma_folder)
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "wb") as file:
-        pickle.dump(index_payload, file)
+        pickle.dump(index, file)
     return path
 
 
@@ -103,7 +95,6 @@ def bm25_search(index_payload: dict, query: str, k: int = CANDIDATE_K) -> list[D
         return []
 
     scores = bm25.get_scores(tokenize(query))
-    # argsort descending without numpy dependency
     ranked_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)
 
     results = []
@@ -118,7 +109,7 @@ def reciprocal_rank_fusion(
     result_lists: list[list[Document]],
     top_n: int,
     rrf_k: int = RRF_K,
-    weights: list[float] | None = None,
+    weights: list[float],
 ) -> list[Document]:
     """
     Merge ranked lists with Reciprocal Rank Fusion.
@@ -128,8 +119,6 @@ def reciprocal_rank_fusion(
     scores: dict[str, float] = {}
     docs_by_key: dict[str, Document] = {}
 
-    if weights is None:
-        weights = [1.0] * len(result_lists)
     if len(weights) != len(result_lists):
         raise ValueError("weights must match the number of result lists")
 
@@ -153,7 +142,7 @@ def hybrid_search(
     """Dense (Chroma) + sparse (BM25) retrieval, fused with RRF."""
     dense_docs = vector_db.similarity_search(query, k=candidate_k)
     sparse_docs = bm25_search(bm25_index, query, k=candidate_k)
-    # Slight BM25 bias helps exact phrases/dates beat near-topic FAQ pages but still working this out
+
     return reciprocal_rank_fusion(
         [dense_docs, sparse_docs],
         top_n=top_k,

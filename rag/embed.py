@@ -31,7 +31,7 @@ from rag.hybrid import build_bm25_index, save_bm25_index
 INPUT_FILE = PROJECT_FOLDER / "data" / "processed" / "chunks.jsonl"
 CHROMA_FOLDER = PROJECT_FOLDER / "chroma_db"
 
-# HuggingFace model ID 
+# HuggingFace model
 EMBEDDING_MODEL = "BAAI/bge-m3"
 
 # Name of the collection inside Chroma (like a table name in a database)
