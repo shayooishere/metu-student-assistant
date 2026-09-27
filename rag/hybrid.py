@@ -108,8 +108,8 @@ def bm25_search(index_payload: dict, query: str, k: int = CANDIDATE_K) -> list[D
 def reciprocal_rank_fusion(
     result_lists: list[list[Document]],
     top_n: int,
-    rrf_k: int = RRF_K,
     weights: list[float],
+    rrf_k: int = RRF_K,
 ) -> list[Document]:
     """
     Merge ranked lists with Reciprocal Rank Fusion.
