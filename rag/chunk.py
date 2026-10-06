@@ -142,7 +142,7 @@ def chunk_one_page(page_record, markdown_splitter, text_splitter):
     """
     Split one page into Documents.
 
-    Catalog course pages: whole page (no header split).
+    Catalog course pages: whole page.
     Everything else: markdown headers + recursive splitter.
     """
     if is_catalog_course_page(page_record):
