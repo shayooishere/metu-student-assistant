@@ -131,7 +131,7 @@ Open the local URL Streamlit prints (usually `http://localhost:8501`).
 
 - Ask concrete student questions (registration, library, dorms, fees, ISO, courses, etc.).
 - Use **New chat** to clear history (resets follow-up rewrite context).
-- Use **Export .txt** to download the conversation with sources.
+- Use **Export Chat** to download the conversation with sources.
 - For multi-part questions (e.g. add-drop **and** summer school limits), asking separately often retrieves better.
 
 ## Configuration (defaults)
@@ -154,8 +154,6 @@ Tune these after measuring retrieval quality on your own question set.
 
 ## Disclaimer
 
-This project is for educational / internship demonstration purposes. It may be incomplete or outdated. Confirm procedures, dates, and requirements on official METU pages before acting on any answer.
+This project is for educational / internship demonstration purposes. It may be incomplete or outdated. Confirm procedures, dates, and requirements on official METU pages before acting on any answer. Content retrieved from METU websites remains the property of Middle East Technical University.
 
-## License
 
-No license file is included yet. Add one if you want others to reuse the code under clear terms.
